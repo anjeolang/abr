@@ -1,0 +1,136 @@
+.schedule-card {
+  background: linear-gradient(135deg, #FFE3EB, #C8A8D0); /* light pink→purple */
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.schedule-info {
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  background: linear-gradient(135deg, #FFD1DD, #A088B0); /* light gradient */
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #D0C7DD;
+}
+
+.schedule-detail {
+  display: none; /* hidden initially */
+  background: #f5f0f8; /* very light pastel purple */
+  padding: 12px;
+  border-top: 1px solid #ddd;
+  font-size: 14px;
+  color: #333;
+  border-radius: 8px;
+  margin-top: 5px;
+}
+
+.schedule-detail p strong {
+  color: #7A5980; /* medium purple labels */
+}
+
+.card-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #faf5fb; /* light pastel background */
+  border-top: 1px solid #ddd;
+}
+
+.card-buttons button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: white;
+}
+
+.card-buttons button.edit {
+  background-color: #A088B0; /* purple edit button */
+}
+
+.card-buttons button.delete {
+  background-color: #E57373; /* red delete button, same */
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: rgba(0,0,0,0.2); /* light transparent overlay */
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #FFE3EB, #C8A8D0);
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+}
+
+.closeBtn {
+  float: right;
+  font-size: 25px;
+  cursor: pointer;
+  color: #7A5980;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #7A5980;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background: #fff0f5; /* light pink */
+  color: #333;
+}
+
+.checkbox-group label {
+  margin-right: 10px;
+}
+/* Create Button */
+button.create {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: linear-gradient(145deg, #FFDEE3, #C8A8D0); /* light pink→purple */
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+button.create:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}

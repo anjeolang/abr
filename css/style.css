@@ -1,0 +1,214 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Poppins, sans-serif;
+  background: linear-gradient(135deg, #FFD6E0, #A68FAF, #8A85A3); /* lightened gradient */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.menu-3d { 
+  text-align: center; 
+}
+
+button {
+  display: block;
+  margin: 15px auto;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  background: linear-gradient(145deg, #FFB6C1, #9E7FBF, #7F7BA0); /* light gradient for buttons */
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15); /* lighter shadow */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover { 
+  transform: translateY(-3px); 
+  box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+} 
+
+button:active { 
+  transform: translateY(1px); 
+}
+
+/* General container */
+.container { 
+  width: 90%;
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+} 
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #9E7FBF; /* use lighter purple */
+}
+
+/* Inputs */
+input, select, textarea {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Cards */
+.card { 
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 12px;
+  background: #f9f5f9; /* slightly lighter */
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08); 
+} 
+
+.no-print { 
+  display: inline-block; 
+}
+
+/* Notes colors */
+.note-red { color: red !important; }
+.note-yellow { color: goldenrod !important; }
+.note-blue { color: blue !important; }
+.note-black { color: black !important; }
+
+/* Keep color on print */
+@media print {
+  .note-red { color: red !important; }
+  .note-yellow { color: goldenrod !important; }
+  .note-blue { color: blue !important; }
+  .note-black { color: black !important; }
+}
+
+.clientRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 8px;
+  background-color: #f4f0f4; /* lighter row background */
+  transition: background-color 0.5s, transform 0.3s;
+}
+
+.clientRow.newHighlight {
+  background-color: #ffe066; /* bright yellow */
+  transform: scale(1.05);
+  animation: fadeHighlight 2s forwards;
+}
+
+@keyframes fadeHighlight {
+  0% { background-color: #ffe066; }
+  100% { background-color: #f4f0f4; }
+}
+.card {
+  border:1px solid #aaa;
+  border-radius:6px;
+  padding:10px;
+  margin-bottom:8px;
+  background-color:#f9f9f9;
+}
+
+.card label {
+  display:inline-block;
+  width:60px; /* fixed width para pareho lahat */
+  text-align:center;
+  margin-right:10px;
+  padding:5px;
+  border-radius:4px;
+  cursor:pointer;
+  user-select:none;
+}
+
+.card input[type="radio"] {
+  display:none; /* hide default radio button */
+}
+
+.card input[type="radio"]:checked + label {
+  font-weight:bold;
+  background-color:#ffd700; /* highlight selected option */
+}
+
+.notes {
+  width:95%;
+  margin-top:5px;
+  display:block;
+  padding:5px;
+  border-radius:4px;
+  border:1px solid #ccc;
+}
+#categoryList button {
+  display:block;
+  width:100%;
+  margin-bottom:5px;
+  padding:10px;
+  border-radius:5px;
+  border:1px solid #888;
+  background-color:#f0f0f0;
+  cursor:pointer;
+  text-align:left;
+}
+
+#categoryList button:hover {
+  background-color:#ddd;
+}
+#finalReport .card {
+  border:1px solid #888;
+  border-radius:5px;
+  padding:10px;
+  margin-bottom:10px;
+  background-color:#f9f9f9;
+}
+/* Checklist scrollable */
+#checklist {
+  max-height: 70vh;  /* taas ng area para sa scroll */
+  overflow-y: auto;
+  padding-bottom: 60px; /* space para sa buttons */
+}
+
+/* Buttons sa ilalim */
+#screen3-buttons {
+  position: fixed;  /* fixed sa ilalim ng screen */
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* back sa kaliwa, next sa kanan */
+  padding: 0 20px;
+  background-color: white; /* para visible kahit may scroll */
+  z-index: 10;
+}
+/* Category list scrollable */
+#categoryList {
+  max-height: 70vh;   /* taas ng scrollable area */
+  overflow-y: auto;
+  padding-bottom: 60px; /* space para sa buttons */
+}
+
+/* Buttons sa ilalim ng screen 2 */
+#screen2-buttons {
+  position: fixed; /* fixed sa ilalim */
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* back sa kaliwa, next sa kanan */
+  padding: 0 20px;
+  background-color: white; /* para visible kahit may scroll */
+  z-index: 10;
+}
