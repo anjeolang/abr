@@ -1,0 +1,32 @@
+/* ===== Top & Bottom Bars ===== */
+/* Top & Bottom frame bars */
+.frame-top, .frame-bottom {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 15px; /* kapal ng frame */
+  background: linear-gradient(135deg, #FFC0CB, #7A5980, #3B3B58);
+  z-index: 1000; /* nasa ibabaw ng lahat pero hindi nakaharang sa content */
+}
+
+/* Top bar */
+.frame-top { top: 0; }
+
+/* Bottom bar */
+.frame-bottom { bottom: 0; }
+
+/* Content container */
+.main-content {
+  padding-top: 30px;   /* space para hindi ma-cover ng top frame */
+  padding-bottom: 30px; /* space para hindi ma-cover ng bottom frame */
+}
+/* Kapag selected ang radio input, lalabas ang black border sa label */
+input[type="radio"]:checked + label {
+  border: 3px solid black; /* mas malinaw ang selection */
+}
+
+/* Optional: hover effect */
+label:hover {
+  transform: scale(1.2);
+  transition: 0.1s;
+}
