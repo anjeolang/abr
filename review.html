@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analyzer Review</title>
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/review.css">
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #FFD1DD, #A088B0, #7A7A99);
+  color: #333;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #FFD1DD, #A088B0);
+  color: black;
+  padding: 10px 15px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 3px solid #7A7A99;
+}
+
+header h1 { margin: 0; font-size: 18px; }
+#searchIcon { font-size: 22px; cursor: pointer; color: #7A5980; }
+
+#searchDiv { display: none; padding: 10px; background: linear-gradient(135deg, #FFE3EB, #C8A8D0); border-radius: 8px; }
+#searchDiv input { width: 100%; padding: 8px; font-size:16px; border-radius:8px; border:1px solid #d1cce0; background:#fff0f5; color:#333; }
+
+#navButtons { display:none; text-align:right; margin:5px 10px; }
+#navButtons .btn { margin-left: 5px; padding:5px 10px; border:none; border-radius:5px; cursor:pointer; background:#7A5980; color:white; }
+
+#reviewContainer { padding: 10px; gap: 15px; }
+
+.categoryCard {
+  background: linear-gradient(135deg, #FFE3EB, #C8A8D0);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.itemCard {
+  background: linear-gradient(135deg, #FFD1DD, #A088B0);
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+
+.itemCard.highlight { border:3px solid orange; }
+mark { background: yellow; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ANALYZER REVIEW</h1>
+  <span id="searchIcon">&#128269;</span>
+</header>
+
+<div id="searchDiv">
+  <input type="text" id="searchInput" placeholder="Search category or item...">
+</div>
+
+<div id="navButtons">
+  <button id="prevMatch" class="btn">Previous</button>
+  <button id="nextMatch" class="btn">Next</button>
+</div>
+
+<div id="reviewContainer"></div>
+
+<script src="js/analyzerData.js"></script>
+<script>
+const reviewContainer = document.getElementById("reviewContainer");
+const searchIcon = document.getElementById("searchIcon");
+const searchDiv = document.getElementById("searchDiv");
+const searchInput = document.getElementById("searchInput");
+const nextBtn = document.getElementById("nextMatch");
+const prevBtn = document.getElementById("prevMatch");
+const navButtons = document.getElementById("navButtons");
+
+let allMatches = [];
+let currentIndex = 0;
+
+// toggle search box
+searchIcon.addEventListener("click", () => {
+  searchDiv.style.display = searchDiv.style.display==="block"?"none":"block";
+  if(searchDiv.style.display==="none"){
+    searchInput.value="";
+    renderAnalyzer();
+    navButtons.style.display="none";
+  }
+});
+
+function highlightText(text, filter){
+  if(!filter) return text;
+  const regex = new RegExp(`(${filter})`, "gi");
+  return text.replace(regex,"<mark>$1</mark>");
+}
+
+function renderAnalyzer(filter=""){
+  reviewContainer.innerHTML = "";
+  allMatches = [];
+  currentIndex = 0;
+  const filterLower = filter.toLowerCase();
+
+  analyzerData.forEach(category => {
+    const catMatch = category.category.toLowerCase().includes(filterLower);
+
+    // skip buong category kung walang match at may filter
+    let catHasMatch = false;
+    const catDiv = document.createElement("div");
+    catDiv.className = "categoryCard";
+    catDiv.innerHTML = `<h2>${highlightText(category.category, filter)}</h2>`;
+
+    category.list.forEach(item=>{
+      ["HIGH","LOW"].forEach(type=>{
+        const val = item[type];
+        const combinedText = `${item.name} ${val.meaning} ${val.condition} ${val.advice}`.toLowerCase();
+        if(filter && !combinedText.includes(filterLower) && !catMatch) return;
+
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "itemCard";
+        itemDiv.innerHTML = `
+          <strong>${highlightText(item.name+" ("+type+")", filter)}</strong>
+          <div><strong>Meaning:</strong> ${highlightText(val.meaning, filter)}</div>
+          <div><strong>Condition:</strong> ${highlightText(val.condition, filter)}</div>
+          <div><strong>Advice:</strong> ${highlightText(val.advice, filter)}</div>
+        `;
+        if(filterLower){ allMatches.push(itemDiv); }
+        catDiv.appendChild(itemDiv);
+        catHasMatch = true;
+      });
+    });
+
+    if(!filter || catHasMatch || catMatch) {
+      reviewContainer.appendChild(catDiv);
+    }
+  });
+
+  if(filter && allMatches.length>0){
+    navButtons.style.display="block";
+    highlightCurrent();
+  } else {
+    navButtons.style.display="none";
+  }
+}
+
+function highlightCurrent(){
+  allMatches.forEach(div=>div.classList.remove("highlight"));
+  if(allMatches.length===0) return;
+  const currentDiv = allMatches[currentIndex];
+  currentDiv.classList.add("highlight");
+  currentDiv.scrollIntoView({behavior:"smooth", block:"center"});
+}
+
+nextBtn.addEventListener("click", ()=>{
+  if(allMatches.length===0) return;
+  currentIndex = (currentIndex+1)%allMatches.length;
+  highlightCurrent();
+});
+prevBtn.addEventListener("click", ()=>{
+  if(allMatches.length===0) return;
+  currentIndex = (currentIndex-1+allMatches.length)%allMatches.length;
+  highlightCurrent();
+});
+
+searchInput.addEventListener("input", ()=> renderAnalyzer(searchInput.value));
+
+// Initial render (lahat muna)
+renderAnalyzer();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assessment Viewer</title>
+<link rel="stylesheet" href="css/fullAdvice.css">
+<head>
+<style>
+body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f4f4f4; }
+.screen { display: none; padding:20px; max-height: 90vh; overflow-y:auto; }
+h2 { margin-top:0; }
+.btn { 
+  padding:12px 18px; margin:6px; border:none; border-radius:8px; 
+  cursor:pointer; background:#7A5980; color:white; font-size:1rem; width:100%;
+}
+.flex-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.category-title { 
+  font-weight:bold; 
+  margin-top:20px; 
+  font-size:1.1em; 
+  color:#7A5980; 
+  border-bottom: 2px solid #ccc; 
+  padding-bottom: 5px;
+}
+.bottom-buttons { position:sticky; bottom:0; background:#f4f4f4; padding:10px; text-align:right; }
+#nameList, #dateList { max-height:70vh; overflow-y:auto; border:1px solid #ccc; border-radius:5px; padding:10px; background:white; }
+#resultDisplay { max-height:75vh; overflow-y:auto; background:white; border:1px solid #ccc; border-radius:5px; padding:15px; }
+#searchBar { width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px; font-size:1rem; }
+
+/* Client Info Table */
+#patientInfo table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+#patientInfo th {
+  text-align: left;
+  padding: 6px;
+  width: 100px;
+  color: #3B3B58;
+}
+#patientInfo td {
+  padding: 6px;
+}
+
+/* Bullet list for advices */
+#resultDisplay ul { 
+  margin-left: 20px; 
+  margin-bottom: 15px; 
+  padding-left: 20px; 
+}
+#resultDisplay li { 
+  margin-bottom: 6px; 
+  line-height: 1.4; 
+}
+
+/* Print Styles */
+@media print {
+  body * { visibility: hidden; }
+  #screen3, #screen3 * { visibility: visible; }
+  #screen3 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: white;
+    color: black;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  #screen3 h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 5px;
+  }
+  .bottom-buttons { display: none; }
+  #resultDisplay { border:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Screen1: Name List -->
+<div class="screen" id="screen1">
+  <h2>Clients</h2>
+  <input type="text" id="searchBar" placeholder="Search name..." onkeyup="filterNames()">
+  <div class="scrollable-list" id="nameList"></div>
+</div>
+
+<!-- Screen2: Date List -->
+<div class="screen" id="screen2">
+  <h2>Dates</h2>
+  <div class="scrollable-list" id="dateList"></div>
+  <div class="bottom-buttons">
+    <button class="btn" onclick="prevScreen(2)">Back</button>
+  </div>
+</div>
+
+<!-- Screen3: Results -->
+<div class="screen" id="screen3">
+  
+  <!-- Top buttons -->
+  <div class="top-buttons">
+    <button class="btn" onclick="prevScreen(3)">Back</button>
+    <button class="btn" onclick="printScreen3()">Print</button>
+    <button class="btn" onclick="deleteResult()">Delete</button>
+  </div>
+
+  <!-- Patient info + results -->
+  <div id="patientInfo"></div>
+  <div id="resultDisplay"></div>
+  
+</div>
+
+<script>
+// Kunin ang mismong resultsStorage mula sa browser storage
+let resultsStorage = JSON.parse(localStorage.getItem("resultsStorage")) || {};
+let currentPatientKey = null;
+let currentDate = null;
+
+// Show first screen
+document.getElementById("screen1").style.display = "block";
+
+// Load Name List (alphabetical)
+function loadNameList(){
+  const div = document.getElementById("nameList");
+  div.innerHTML = "";
+  const names = Object.keys(resultsStorage).sort();
+  names.forEach(name=>{
+    const btn = document.createElement("button");
+    btn.textContent = name;
+    btn.className="btn name-btn";
+    btn.onclick = () => { currentPatientKey=name; nextScreen(1); loadDateList(name); };
+    div.appendChild(btn);
+  });
+}
+loadNameList();
+
+// Search filter sa names
+function filterNames(){
+  const input = document.getElementById("searchBar").value.toLowerCase();
+  const btns = document.querySelectorAll(".name-btn");
+  btns.forEach(btn=>{
+    btn.style.display = btn.textContent.toLowerCase().includes(input) ? "block" : "none";
+  });
+}
+
+// Load Date List (desc order)
+function loadDateList(name){
+  const div = document.getElementById("dateList");
+  div.innerHTML="";
+  const dates = Object.keys(resultsStorage[name])
+    .filter(k=>k!=="info")
+    .sort((a,b)=> new Date(b) - new Date(a));
+  dates.forEach(d=>{
+    const btn = document.createElement("button");
+    btn.textContent = d;
+    btn.className="btn";
+    btn.onclick = () => { currentDate=d; nextScreen(2); showScreen3(); };
+    div.appendChild(btn);
+  });
+}
+
+// Navigate screens
+function nextScreen(screen){
+  document.getElementById(`screen${screen}`).style.display="none";
+  document.getElementById(`screen${screen+1}`).style.display="block";
+}
+function prevScreen(screen){
+  document.getElementById(`screen${screen}`).style.display="none";
+  document.getElementById(`screen${screen-1}`).style.display="block";
+}
+
+// Screen 3: Show patient info + results
+function showScreen3(){
+  const div = document.getElementById("resultDisplay");
+  div.innerHTML="";
+  const patientData = resultsStorage[currentPatientKey][currentDate];
+
+  document.getElementById("patientInfo").innerHTML = `
+    <h4>Client Information</h4>
+    <table>
+      <tr><th>Name:</th><td>${currentPatientKey}</td></tr>
+      <tr><th>Gender:</th><td>${patientData.info.gender}</td></tr>
+      <tr><th>Age:</th><td>${patientData.info.age}</td></tr>
+      <tr><th>Date:</th><td>${currentDate}</td></tr>
+    </table>
+  `;
+
+  Object.keys(patientData).forEach(category=>{
+    if(category==="info") return;
+    const catDiv = document.createElement("div");
+    catDiv.className="category-title";
+    catDiv.textContent=category;
+    div.appendChild(catDiv);
+
+    // Collect advice (bullet list)
+    let adviceSet = new Set();
+    Object.keys(patientData[category]).forEach(indicator=>{
+      const adv = patientData[category][indicator].advice;
+      adv.split(/\.|\n/).forEach(a=>{
+        const t=a.trim();
+        if(t) adviceSet.add(t);
+      });
+    });
+
+    if(adviceSet.size > 0){
+      const ul=document.createElement("ul");
+      adviceSet.forEach(a=>{
+        const li=document.createElement("li");
+        li.textContent=a;
+        ul.appendChild(li);
+      });
+      div.appendChild(ul);
+    }
+  });
+}
+function deleteResult(){
+  const lastName = currentPatientKey.split(" ").slice(-1)[0];
+  const input = prompt(`Type last name "${lastName}" to confirm delete:`);
+
+  if(input && input.trim().toLowerCase() === lastName.toLowerCase()){
+    delete resultsStorage[currentPatientKey][currentDate];
+
+    if(Object.keys(resultsStorage[currentPatientKey]).length === 1){ // only 'info' left
+      delete resultsStorage[currentPatientKey];
+    }
+
+    localStorage.setItem("resultsStorage", JSON.stringify(resultsStorage));
+    alert("Result deleted successfully.");
+    prevScreen(3);
+    loadNameList();
+  } else {
+    alert("Last name did not match. Delete canceled.");
+  }
+}
+// Print
+function printScreen3(){
+  const div=document.getElementById("screen3");
+  const newWin = window.open("");
+  newWin.document.write("<html><head><title>Print</title></head><body>");
+  newWin.document.write(div.innerHTML);
+  newWin.document.write("</body></html>");
+  newWin.document.close();
+  newWin.print();
+}
+</script>
+</body>
+</html>

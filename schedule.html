@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule Screen</title>
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/schedule.css">
+</head>
+<body>
+  <div class="frame-top"></div>
+  <div class="frame-bottom"></div>
+  <div class="main-content">
+  <header>
+    <h2>Schedule:</h2>
+    <button id="createBtn">Create</button>
+  </header>
+
+  <!-- Schedule List -->
+  <div id="scheduleList" class="list-container">
+    <!-- Dynamically filled by JS -->
+  </div>
+
+  <!-- Create/Edit Schedule Modal -->
+  <div id="scheduleModal" class="modal">
+    <div class="modal-content">
+      <span class="closeBtn">&times;</span>
+      <h3 id="modalTitle">Add Schedule</h3>
+
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Full Name">
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age:</label>
+        <input type="number" id="age" placeholder="Age">
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Gender:</label>
+        <select id="gender">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Address:</label>
+        <input type="text" id="address" placeholder="Address">
+      </div>
+
+      <div class="form-group">
+        <label for="day">Day:</label>
+        <input type="text" id="day" placeholder="Monday, Tuesday...">
+      </div>
+
+      <div class="form-group">
+        <label for="date">Date:</label>
+        <input type="date" id="date">
+      </div>
+
+      <div class="form-group">
+        <label for="medicine">Taking Medicine:</label>
+        <input type="text" id="medicine" placeholder="Medicine Info">
+      </div>
+
+      <div class="form-group">
+        <label>Medical Information:</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" class="medInfo" value="X-RAY"> X-RAY</label>
+          <label><input type="checkbox" class="medInfo" value="MRI"> MRI</label>
+          <label><input type="checkbox" class="medInfo" value="Others"> Others</label>
+        </div>
+        <textarea id="otherNotes" placeholder="Specify other..." style="display:none;"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="concern">Concern:</label>
+        <textarea id="concern" placeholder="Patient Concern"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="expectation">Expectation:</label>
+        <textarea id="expectation" placeholder="Patient Expectation"></textarea>
+      </div>
+
+      <button id="addScheduleBtn">Add Schedule</button>
+    </div>
+  </div>
+
+  <script src="js/schedule.js"></script>
+</body>
+</html>

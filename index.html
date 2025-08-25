@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Main Menu</title>
+  <link rel="stylesheet" href="css/mainmenu.css">
+</head>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@500&display=swap" rel="stylesheet">
+<body>
+
+<div class="main-container">
+  <h1 class="main-title">
+    <span class="big-title">ANGEL BRISKEN RESTORATOR</span>
+    <span class="small-title">WELLNESS HUB</span>
+  </h1>
+ 
+  <button onclick="location.href='assessment.html'">Assessment
+    <span class="button-needle"></span>
+  </button>
+  
+  <button onclick="location.href='results.html'">Results
+    <span class="button-needle"></span>
+  </button>
+  
+  <button onclick="location.href='fullAdvice.html'">Full Advice
+    <span class="button-needle"></span>
+  </button>
+  
+  <button onclick="location.href='review.html'">Review
+    <span class="button-needle"></span>
+  </button>
+  
+  <button onclick="location.href='schedule.html'">Schedule
+    <span class="button-needle"></span>
+  </button>
+  
+  <button onclick="location.href='client.html'">Client Info
+    <span class="button-needle"></span>
+  </button>
+</div>
+<link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(() => console.log('Service Worker registered'))
+      .catch(err => console.log('Service Worker failed', err));
+  }
+</script>
+</script> 
+</body>
+</html>

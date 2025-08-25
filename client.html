@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Information</title>
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/client.css">
+</head>
+<body>
+  <div class="bar-top"></div>
+  <div class="bar-bottom"></div>
+  <div class="main-content">
+
+<h1>Client Information</h1>
+
+<!-- New Client Button -->
+<button id="newClientBtn" class="btn-3d">New</button>
+
+<!-- Client List -->
+<div id="clientList"></div>
+
+<!-- Modal Form -->
+<div id="clientFormModal" class="modal">
+  <div class="modal-content">
+    <span id="closeFormBtn" class="close">&times;</span>
+    <h2 id="formTitle">Add New Client</h2>
+    <form id="clientForm">
+      <input type="text" id="clientName" placeholder="Name" required>
+      <input type="number" id="clientAge" placeholder="Age">
+      <select id="clientGender">
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+      <input type="text" id="clientAddress" placeholder="Address">
+      <input type="date" id="clientDate">
+      <input type="text" id="clientMedicine" placeholder="Taking Medicine">
+      <select id="clientMedicalInfo">
+        <option value="">Select Medical Info</option>
+        <option value="X-RAY">X-RAY</option>
+        <option value="MRI">MRI</option>
+        <option value="Other">Other</option>
+      </select>
+      <textarea id="clientOtherNotes" placeholder="Specify Other" style="display:none;"></textarea>
+      <textarea id="clientConcern" placeholder="Concern"></textarea>
+      <textarea id="clientExpectation" placeholder="Expectation"></textarea>
+      <button type="button" id="addClientBtn" class="btn-3d">Add New</button>
+    </form>
+  </div>
+</div>
+
+<script src="js/client.js"></script>
+</body>
+</html>
