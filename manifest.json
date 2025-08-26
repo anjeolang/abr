@@ -3,7 +3,7 @@
   "short_name": "ABR",
   "description": "Assessment tool for ABR results",
   "id": "/",
-  "start_url": "abr/index.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#9b59b6",
