@@ -2,7 +2,7 @@
   "name": "ABR Assessment",
   "short_name": "ABR",
   "start_url": "/abr/index.html",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#ffffff",
   "theme_color": "#9b59b6",
   "icons": [
