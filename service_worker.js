@@ -1,12 +1,10 @@
 const CACHE_NAME = 'abr-cache-v1';
 const FILES_TO_CACHE = [
   '/',
-  '/index.html',
-  '/style.css',
-  '/mainmenu.css',
-  '/main.js',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png'
+  '/abr/index.html',
+  '/abr/mainmenu.css',
+  '/abr/icons/192.png',
+  '/abr/icons/512.png'
 ];
 
 // Install event: cache critical files
