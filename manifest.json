@@ -2,11 +2,15 @@
   "name": "ABR Assessment",
   "short_name": "ABR",
   "description": "Assessment tool for ABR results",
+  "id": "/",
   "start_url": "abr/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#9b59b6",
   "orientation": "portrait",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
   "icons": [
     {
       "src": "abr/icons/512.png",
