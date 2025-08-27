@@ -1,3 +1,26 @@
+@media print {
+  body {
+    visibility: visible !important;
+  }
+
+  /* Para lahat ng content kita */
+  * {
+    visibility: visible !important;
+    overflow: visible !important;
+  }
+
+  /* Para lahat ng container mag-expand */
+  html, body {
+    height: auto !important;
+    overflow: auto !important;
+  }
+
+  /* Itago ang mga button o hindi kailangan */
+  .no-print, button, .print-btn {
+    display: none !important;
+  }
+}
+
 #screen3 .btn {
   margin-top: 85px; /* adjust this value para bumaba ng kaunti */
 }
