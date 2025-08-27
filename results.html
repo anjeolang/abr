@@ -228,18 +228,19 @@ function showResult(patientKey, date) {
   });
 
 // Print button
-   const printBtn = document.createElement("button");
-   printBtn.textContent = "Print / Save PDF";
-   printBtn.className = "btn print-btn";
-   printBtn.onclick = () => {
-     html2pdf().from(document.body).set({
-       margin: 0.5,
-       filename: `${decodedName.replace(/ /g,"_")}_${date}.pdf`,
-       pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
-       html2canvas: { scale: 2, useCORS: true }
-    }).save();
-  };
-  div.appendChild(printBtn);
+const printBtn = document.createElement("button");
+printBtn.textContent = "Print / Save PDF";
+printBtn.className = "btn print-btn";
+printBtn.onclick = () => {
+  const element = document.getElementById("resultDisplay");
+  html2pdf().from(element).set({
+    margin: 0.5,
+    filename: `${decodedName.replace(/ /g,"_")}_${date}.pdf`,
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+    html2canvas: { scale: 2, useCORS: true }
+  }).save();
+};
+div.appendChild(printBtn);
 }
 </script>
 </body>
