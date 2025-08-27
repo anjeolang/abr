@@ -226,12 +226,11 @@ function showResult(patientKey, date) {
       div.appendChild(card);
     });
   });
-
-// Print button
-const printBtn = document.createElement("button");
-printBtn.textContent = "Print / Save PDF";
-printBtn.className = "btn print-btn";
-printBtn.onclick = () => {
+// Print / Save PDF button
+const printPdfBtn = document.createElement("button");
+printPdfBtn.textContent = "Save as PDF";
+printPdfBtn.className = "btn print-btn";
+printPdfBtn.onclick = () => {
   const element = document.getElementById("resultDisplay");
   html2pdf().from(element).set({
     margin: 0.5,
@@ -240,7 +239,14 @@ printBtn.onclick = () => {
     html2canvas: { scale: 2, useCORS: true }
   }).save();
 };
-div.appendChild(printBtn);
+div.appendChild(printPdfBtn);
+
+// Normal print button
+const printNormalBtn = document.createElement("button");
+printNormalBtn.textContent = "Print Page";
+printNormalBtn.className = "btn print-btn";
+printNormalBtn.onclick = () => window.print();
+div.appendChild(printNormalBtn);
 }
 </script>
 </body>
