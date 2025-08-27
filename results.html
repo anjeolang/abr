@@ -242,21 +242,32 @@ function showResult(patientKey, date) {
     });
   });
   // === PRINT BUTTON ===
-  const printBtn = document.createElement("button");
-  printBtn.textContent = "Print / Save PDF";
-  printBtn.className = "btn print-btn";
-  printBtn.onclick = () => saveAsPDF(decodedName, date);
-  div.appendChild(printBtn);
+const printBtn = document.createElement("button");
+printBtn.textContent = "Print / Save PDF";
+printBtn.className = "btn print-btn";
+printBtn.onclick = () => saveAsPDF(decodedName, date);
+
+// idikit sa labas ng resultDisplay (sa mismong screen3)
+document.getElementById("screen3").appendChild(printBtn);
   }
   function saveAsPDF(decodedName, date) {
   const element = document.getElementById("resultDisplay");
 
+  // tanggalin muna ang max-height at overflow bago i-capture
+  element.style.maxHeight = "none";
+  element.style.overflow = "visible";
+
   html2pdf().from(element).set({
     margin: 0.5,
     filename: `${decodedName.replace(/ /g,"_")}_${date}.pdf`,
-    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+    pagebreak: { mode: ['css', 'legacy'] },
     html2canvas: { scale: 2, useCORS: true }
-  }).save();
+  }).save()
+  .then(() => {
+    // ibalik ulit sa dati para sa UI display
+    element.style.maxHeight = "";
+    element.style.overflow = "";
+  });
 }
 </script>
 </body>
