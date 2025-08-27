@@ -11,13 +11,11 @@
 body { font-family: Arial, sans-serif; padding: 10px; background:#f4f4f4; }  
 .screen { display: none; }  
 h2 { margin-top: 0; }  
-.card { background: #fff; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; }  
-}  
+.card { background: #fff; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;
   /* Para hindi maputol ang bawat card sa gitna */
-.card {
   page-break-inside: avoid;
   break-inside: avoid;
-  }
+}
 
   /* Print button styling */
 .print-btn {
@@ -239,38 +237,71 @@ function showResult(patientKey, date) {
       div.appendChild(card);  
     });  
   });  
+ const resultDiv = document.getElementById("resultDisplay");
 
- // Print button
- const printBtn = document.createElement("button");
- printBtn.textContent = "Print / Save PDF";
- printBtn.className = "btn print-btn";
- printBtn.onclick = () => {
-  const element = document.getElementById("resultDisplay");
+  // ✅ Print / Save PDF Button
+  const printBtn = document.createElement("button");
+  printBtn.textContent = "📄 Print / Save PDF";
+  printBtn.className = "action-btn";
 
-  // Para hindi maisama ang button sa print
-  printBtn.style.display = "none";
+  printBtn.onclick = () => {
+    printBtn.style.display = "none";
+    downloadBtn.style.display = "none";
 
-  html2pdf().set({
-    margin: 0.5,
-    filename: `${decodedName.replace(/ /g,"_")}_${date}.pdf`,
-    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
-    html2canvas: { 
-      scale: 2, 
-      useCORS: true, 
-      scrollX: 0, 
-      scrollY: -window.scrollY, 
-      windowWidth: document.documentElement.scrollWidth, 
-      windowHeight: document.documentElement.scrollHeight 
-    },
-    jsPDF: { unit: "in", format: "a4", orientation: "portrait" }
-  }).from(element).save().then(() => {
-    // Ibalik ulit yung button pagkatapos mag-save
-    printBtn.style.display = "block";
-  });
-};
+    html2pdf()
+      .set({
+        margin: 0.5,
+        filename: `${decodedName.replace(/ /g,"_")}_${date}.pdf`,
+        pagebreak: { mode: ["css", "legacy"] },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          scrollX: 0,
+          scrollY: -window.scrollY,
+          windowWidth: document.documentElement.scrollWidth,
+          windowHeight: document.documentElement.scrollHeight
+        },
+        jsPDF: { unit: "in", format: "auto", orientation: "portrait" }
+      })
+      .from(resultDiv)
+      .save()
+      .then(() => {
+        printBtn.style.display = "inline-block";
+        downloadBtn.style.display = "inline-block";
+      });
+  };
 
-div.appendChild(printBtn);
-}
+  // ✅ Download as Image (PNG) Button
+  const downloadBtn = document.createElement("button");
+  downloadBtn.textContent = "🖼️ Download as Image";
+  downloadBtn.className = "action-btn";
+
+  downloadBtn.onclick = () => {
+    printBtn.style.display = "none";
+    downloadBtn.style.display = "none";
+
+    html2canvas(resultDiv, {
+      scale: 2,
+      useCORS: true,
+      scrollX: 0,
+      scrollY: -window.scrollY,
+      windowWidth: document.documentElement.scrollWidth,
+      windowHeight: document.documentElement.scrollHeight
+    }).then(canvas => {
+      const link = document.createElement("a");
+      link.download = `${decodedName.replace(/ /g,"_")}_${date}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+
+      printBtn.style.display = "inline-block";
+      downloadBtn.style.display = "inline-block";
+    });
+  };
+
+  // ✅ Idagdag sa pinakadulo ng result
+  resultDiv.appendChild(printBtn);
+  resultDiv.appendChild(downloadBtn);
+ }
   </script>  
 </body>  
 </html>
