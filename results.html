@@ -13,7 +13,28 @@ body { font-family: Arial, sans-serif; padding: 10px; background:#f4f4f4; }
 h2 { margin-top: 0; }  
 .card { background: #fff; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; }  
 }  
-.print-btn { background: green; color: white; margin-top:10px;}  
+  /* Para hindi maputol ang bawat card sa gitna */
+.card {
+  page-break-inside: avoid;
+  break-inside: avoid;
+  }
+
+  /* Print button styling */
+.print-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.print-btn:hover {
+    background: #0056b3;
+  }
 .flex-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }  
 </style>  
 </head>  
@@ -219,19 +240,36 @@ function showResult(patientKey, date) {
     });  
   });  
 
-  // Print button (lagay sa pinakadulo)  
-  const printBtn = document.createElement("button");  
-  printBtn.textContent = "Print / Save PDF";  
-  printBtn.className = "btn print-btn";  
-  printBtn.onclick = () => {  
-    html2pdf().from(div).set({  
-      margin: 0.5,  
-      filename: `${decodedName.replace(/ /g,"_")}_${date}.pdf`,  
-      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },  
-      html2canvas: { scale: 2, useCORS: true }  
-    }).save();  
-  };  
-  div.appendChild(printBtn);  
+ // Print button
+ const printBtn = document.createElement("button");
+ printBtn.textContent = "Print / Save PDF";
+ printBtn.className = "btn print-btn";
+ printBtn.onclick = () => {
+  const element = document.getElementById("resultDisplay");
+
+  // Para hindi maisama ang button sa print
+  printBtn.style.display = "none";
+
+  html2pdf().set({
+    margin: 0.5,
+    filename: `${decodedName.replace(/ /g,"_")}_${date}.pdf`,
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+    html2canvas: { 
+      scale: 2, 
+      useCORS: true, 
+      scrollX: 0, 
+      scrollY: -window.scrollY, 
+      windowWidth: document.documentElement.scrollWidth, 
+      windowHeight: document.documentElement.scrollHeight 
+    },
+    jsPDF: { unit: "in", format: "a4", orientation: "portrait" }
+  }).from(element).save().then(() => {
+    // Ibalik ulit yung button pagkatapos mag-save
+    printBtn.style.display = "block";
+  });
+};
+
+div.appendChild(printBtn);
 }
   </script>  
 </body>  
